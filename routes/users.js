@@ -4,6 +4,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const {clearRes} = require("../utils/auth")
 
 /*POST Signup */
 router.post('/signup', (req, res, next) => {
@@ -40,8 +41,12 @@ router.post('/login', (req, res, next) => {
 
             if(match){
               //borramos password para el usuario de esta forma 
-                  const withoutPass = user.toObject();
-                  delete withoutPass.password
+              //primera forma
+                //  const withoutPass = user.toObject();
+                //  delete withoutPass.password
+
+                //con un utils
+                const newUser =  clearRes(user.toObject())
                 //esto nos genera un toke mezclando un valor (id) mas la palabra secreta y tiene una duracion de un dia!!!
                 const  token = jwt.sign({id: user._id}, process.env.SECRET, {
                   expiresIn:"1d"
@@ -51,7 +56,7 @@ router.post('/login', (req, res, next) => {
                   expires:new Date(Date.now + 86400000),
                   secure:false,
                   httpOnly:true,
-                }).json({user:withoutPass,code:200})
+                }).json({user:newUser,code:200})
             }else{
               return res.status(401).json({msg:"Epal Epale no existe no es tu contraseña"})
             }
