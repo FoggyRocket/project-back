@@ -12,6 +12,14 @@ router.get('/', veryToken, (req, res, next) => {
     const { _id } = req.user
 
     Reservation.find({ _guest: _id })
+        .populate({ // <---- agegar todo este para hacer un populate aninado
+            path:"property",
+            populate:{
+                path:"_owner",
+                select: "name",
+            },
+        }) //<----- Populate
+
         .then((reservations)=>{
             res.status(200).json({result:reservations})
         })
@@ -26,6 +34,7 @@ router.get('/property/:property_id', veryToken, (req, res, next) => {
     const { property_id } = req.params;
 
     Reservation.find({ _property : property_id })
+        .populate("_guest","name") //<----- Populate
         .then((reservations)=>{
             res.status(200).json({result:reservations})
         })

@@ -35,6 +35,7 @@ router.post("/", veryToken, (req, res,next)=>{
 router.get('/', veryToken, (req, res, next) => {
             //req.query = {key:"value"}
   Property.find(req.query)
+    .populate("_owner","email name profile_picture") //<----- Populate
     .then((properties)=>{
         res.status(200).json({result:properties})
     })
@@ -51,6 +52,7 @@ router.get('/:id', veryToken, (req, res, next) => {
     const {id} = req.params;
 
     Property.findById(id)
+        .populate("_owner","email name profile_picture") //<----- Populate
         .then((property)=>{
             res.status(200).json({result:property})
         })
@@ -67,6 +69,7 @@ router.patch("/:id", veryToken, (req, res,next)=>{
     const { id } = req.params;
     // req.body = {title:"perro", age:"2", ...}
     Property.findByIdAndUpdate(id,req.body, { new:true })
+    .populate("_owner","email name profile_picture") //<----- Populate
     .then((property)=>{
         res.status(200).json({result:property})
     })
