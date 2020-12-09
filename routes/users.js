@@ -9,13 +9,13 @@ const {clearRes} = require("../utils/auth")
 /*POST Signup */
 router.post('/signup', (req, res, next) => {
   //trabajare todo mi codigo aqui 
-  const {email,password,confirmPassword} = req.body;
+  const {email,password,confirmPassword,name} = req.body;
  
   if(password !== confirmPassword) return  res.status(403).json({msg:"Las contraseñas no coinciden"})
 
   bcrypt.hash(password,10).then((hashedPassword)=>{
 
-    const  user = {email,password:hashedPassword};
+    const  user = {email,password:hashedPassword,name};
 
     User.create(user).then(()=>{
       res.status(200).json({msg:"Usuario creadp con éxito"});

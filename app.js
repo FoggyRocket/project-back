@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const mongoose = require("mongoose");
-
+const cors = require("cors")
 
 
 //Agregamos la conexion de mongoose
@@ -26,6 +26,17 @@ mongoose.connect(process.env.DB,{
 
 
 const app = express();
+//utilizo cors para darle permisos a otras apps
+
+app.use(
+    cors({
+      origin:["http://localhost:3001"],
+      credentials: true,
+    })
+);
+
+
+
 
 app.use(logger('dev'));
 app.use(express.json());
