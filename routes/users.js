@@ -18,7 +18,7 @@ router.post('/signup', (req, res, next) => {
     const  user = {email,password:hashedPassword,name};
 
     User.create(user).then(()=>{
-      res.status(200).json({msg:"Usuario creadp con éxito"});
+      res.status(200).json({msg:"Usuario creado con éxito"});
     }).catch((error)=>{
       res.status(400).json({msg:"hubo un error",error});
     })
