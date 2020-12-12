@@ -58,4 +58,10 @@ app.use('/api/user', usersRouter);
 app.use("/api/property",propertyRouter);
 app.use("/api/reservation",reservationRouter);
 
+//esto es muy importante es para seguir en la ruta despues de actualizar
+//podamos entrar a cualquier ruta
+app.use("*", (req,res)=>{
+ res.send(path.join(__dirname, "public","index.html"));
+});
+
 module.exports = app;
